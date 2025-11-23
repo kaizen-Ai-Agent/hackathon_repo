@@ -1,0 +1,61 @@
+# --- Python ---
+*__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+*/venv/
+
+# --- UV package manager ---
+# Cache and build artifacts
+.uv/
+uv.lock.bak
+
+# --- OS files ---
+.DS_Store
+Thumbs.db
+
+# --- Editors / IDEs ---
+.vscode/
+.idea/
+*.swp
+
+# --- Logs & temp files ---
+*.log
+*.tmp
+*.bak
+
+# --- Test / Coverage ---
+.coverage
+htmlcov/
+pytest_cache/
+.tox/
+.mypy_cache/
+.pytest_cache/
+.cache/
+
+# --- Build outputs ---
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# --- Local configuration ---
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# --- Docker ---
+*.pid
+*.seed
+docker-compose.override.yml
+
+# --- Database ---
+*.sqlite3

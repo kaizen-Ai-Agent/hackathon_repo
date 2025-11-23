@@ -1,0 +1,79 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("SQLITE_DATABASE_URL")
+}
+
+generator client {
+    provider = "prisma-client-py"
+    interface = "asyncio"
+    recursive_type_depth = 5
+}
+
+model User {
+    id String @id @default(uuid())
+    email String @unique
+    fullName String?
+    password                String? 
+    google_id               String
+    google_access_token     String?
+    google_refresh_token    String?
+    google_token_expires_at DateTime?
+    meetingsHosted Meeting[] @relation("Host")
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model Meeting {
+    id String @id @default(uuid())
+    title String
+    hostId String
+    host User @relation("Host", fields: [hostId], references: [id])
+
+    startTime DateTime
+    scheduledEnd DateTime
+    actualEnd DateTime?
+
+    isActive Boolean @default(true)
+    providerId String?
+
+    transcripts Transcript[]
+    summary Summary?
+    actionItems ActionItem[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([scheduledEnd])
+}
+
+model Transcript {
+    id String @id @default(uuid())
+    meetingId String
+    meeting Meeting @relation(fields: [meetingId], references: [id])
+    content String
+    speaker String?
+    timestamp DateTime
+    createdAt               DateTime  @default(now())
+    updatedAt               DateTime  @updatedAt
+}
+
+model Summary {
+    id String @id @default(uuid())
+    meetingId String @unique
+    meeting Meeting @relation(fields: [meetingId], references: [id])
+    content String
+    modelUsed String
+    createdAt DateTime @default(now())
+}
+
+model ActionItem {
+    id String @id @default(uuid())
+    meetingId String
+    meeting Meeting @relation(fields: [meetingId], references: [id])
+    description String
+    posted String?
+    status String @default("OPEN")
+    createdAt               DateTime  @default(now())
+    updatedAt               DateTime  @updatedAt
+}
